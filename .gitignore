@@ -1,0 +1,39 @@
+# Visual Studio 项目文件和构建目录
+.vs/
+x64/
+x86/
+Debug/
+Release/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.user
+*.aps
+*.pdb
+*.ilk
+*.log
+*.tlog/
+*.sdf
+*.opensdf
+*.db
+*.opendb
+
+# 编译生成文件
+*.obj
+*.exe
+*.dll
+*.lib
+*.exp
+*.manifest
+*.bsc
+*.cache
+
+# 其他临时文件
+*.~*
+*~
+*.swp
+
+# 包依赖目录
+packages/
