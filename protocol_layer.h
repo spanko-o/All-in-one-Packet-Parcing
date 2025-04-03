@@ -22,6 +22,10 @@ struct MacAddress {
 struct IPv4Address {
 	uint8_t bytes[4];
 };
+//UDPµÿ÷∑Ω·ππ
+struct UdpAddress {
+	uint8_t bytes[16]
+};
 
 class ProtocolLayer {
 public:
