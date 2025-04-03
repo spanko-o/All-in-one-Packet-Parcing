@@ -29,7 +29,7 @@ void EthernetParser::parse() {
 
     if (ether_type_ != 0x0800 && ether_type_ != 0x86DD && ether_type_ != 0x8100) {
         throw std::runtime_error("Unsupported EtherType");
-    }
+    }   
 }
 
 std::string EthernetParser::summary() const noexcept {
