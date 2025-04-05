@@ -10,7 +10,7 @@ enum class ProtocolType {
 	IPv4,
 	UDP,
 	DNS,
-	UNKOWN
+	UNKNOWN
 };
 
 //MAC地址结构6字节
@@ -24,7 +24,7 @@ struct IPv4Address {
 };
 //UDP地址结构
 struct UdpAddress {
-	uint8_t bytes[16]
+	uint8_t bytes[16];
 };
 
 class ProtocolLayer {
@@ -41,9 +41,9 @@ public:
 
 	virtual std::string summary() const noexcept = 0;
 
-	const uint8_t* payload() const noexcept = 0;
+	virtual const uint8_t* payload() const noexcept = 0;
 
-	size_t payload_length() const noexcept = 0;
+	virtual size_t payload_length() const noexcept = 0;
 
 	const uint8_t* raw_data() const noexcept {
 		return raw_data_;

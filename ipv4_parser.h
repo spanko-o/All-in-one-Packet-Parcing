@@ -33,11 +33,11 @@ public:
     }
 
 private:
-    void parse(const uint8_t* data, size_t length);
+    void parse();
 
     IPv4Address src_ip_;
     IPv4Address dst_ip_;
     uint8_t protocol_;
     uint8_t ttl_;
     uint16_t total_length_;
-}
+};
