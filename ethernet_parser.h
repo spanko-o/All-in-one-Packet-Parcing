@@ -15,6 +15,7 @@ public:
     const uint8_t* payload() const noexcept override {
         return payload_ptr_;
     }
+
     size_t payload_length() const noexcept override {
         return payload_len_;
     }

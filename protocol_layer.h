@@ -10,7 +10,7 @@ enum class ProtocolType {
 	IPv4,
 	UDP,
 	DNS,
-	UNKOWN
+	UNKNOWN
 };
 
 //MAC地址结构6字节
@@ -24,7 +24,7 @@ struct IPv4Address {
 };
 //UDP地址结构
 struct UdpAddress {
-	uint8_t bytes[16]
+	uint8_t bytes[16];
 };
 
 class ProtocolLayer {

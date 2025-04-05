@@ -2,17 +2,25 @@
 #include <stdexcept>
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 
 constexpr size_t ETHERNET_HEADER_LEN = 14;
 
 EthernetParser::EthernetParser(const uint8_t* data, size_t length)
     : ProtocolLayer(data, length){
+    std::cout << "Entering EthernetParser constructor. data pointer: " << data
+        << ", length: " << length << std::endl;
+    if (data == nullptr) {
+        throw std::invalid_argument("Input data pointer for EthernetParser is null");
+    }
     parse();  // 传递参数给parse
 }
 
 void EthernetParser::parse() {
+    std::cout << "Entering parse function. data_length_: " << data_length_ << std::endl;
     // 参数校验
     if (data_length_ < ETHERNET_HEADER_LEN) {
+        std::cerr << "Error: Ethernet header too short. data_length_: " << data_length_ << std::endl;
         throw std::runtime_error("Ethernet header too short");
     }
 

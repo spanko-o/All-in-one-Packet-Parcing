@@ -7,14 +7,13 @@
 constexpr size_t IPV4_MIN_HEADER_LEN = 20;
 
 IPv4Parser::IPv4Parser(const uint8_t* data, size_t length)
-    : raw_data_(data),
-    data_length_(length),
-    payload_ptr_(nullptr),
-    payload_len_(0) {
-    parse(data, length);
+    : ProtocolLayer(data, length){
+    parse();
 }
 
-void IPv4Parser::parse(const uint8_t* data, size_t length) {
+void IPv4Parser::parse() {
+    const uint8_t* data = raw_data_;
+    size_t length = data_length_;
     // 基本长度检查
     if (length < IPV4_MIN_HEADER_LEN) {
         throw std::runtime_error("IPv4 header too short");
