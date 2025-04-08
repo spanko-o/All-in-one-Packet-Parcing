@@ -21,10 +21,10 @@ public:
     }
 
     // 以太网特有方法
-    const MacAddress& source_mac() const noexcept {
+    const MacAddress_new& source_mac() const noexcept {
         return src_mac_;
     }
-    const MacAddress& destination_mac() const noexcept {
+    const MacAddress_new& destination_mac() const noexcept {
         return dst_mac_;
     }
     uint16_t ether_type() const noexcept {
@@ -34,7 +34,7 @@ public:
 private:
     void parse();
 
-    MacAddress src_mac_;
-    MacAddress dst_mac_;
+    MacAddress_new src_mac_;
+    MacAddress_new dst_mac_;
     uint16_t ether_type_;
 };
