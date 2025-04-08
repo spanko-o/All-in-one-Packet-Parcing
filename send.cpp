@@ -67,7 +67,21 @@ std::vector<uint8_t> construct_dns_request(const std::string& domain_name, const
     packet.insert(packet.end(), src_mac.data(), src_mac.data() + 6);
     packet.push_back(ether_type >> 8);
     packet.push_back(ether_type & 0xFF);
-    std::cout << "Ethernet header added." << std::endl;
+    //std::cout << "Ethernet header added." << std::endl;
+
+    // 打印以太网层字段
+    std::cout << "Ethernet Layer Fields:" << std::endl;
+    std::cout << "  Destination MAC: ";
+    for (int i = 0; i < 6; ++i) {
+        printf("%02X:", dst_mac.data()[i]);
+    }
+    std::cout << std::endl;
+    std::cout << "  Source MAC: ";
+    for (int i = 0; i < 6; ++i) {
+        printf("%02X:", src_mac.data()[i]);
+    }
+    std::cout << std::endl;
+    std::cout << "  EtherType: 0x%04X" << ether_type << std::endl;
 
     // 添加IP头
     uint8_t ip_header[20];
@@ -87,7 +101,20 @@ std::vector<uint8_t> construct_dns_request(const std::string& domain_name, const
     uint16_t ip_checksum = calculate_checksum_new(ip_header, 20);
     memcpy(&ip_header[10], &ip_checksum, 2);
     packet.insert(packet.end(), ip_header, ip_header + 20);
-    std::cout << "IP header added." << std::endl;
+    //std::cout << "IP header added." << std::endl;
+
+    // 打印IP层字段
+    std::cout << "IP Layer Fields:" << std::endl;
+    std::cout << "  Version and Header Length: 0x%02X" << ip_header[0] << std::endl;
+    std::cout << "  Type of Service: 0x%02X" << ip_header[1] << std::endl;
+    std::cout << "  Total Length: 0x%04X" << ntohs(total_length) << std::endl;
+    std::cout << "  Identification: 0x%04X" << (ip_header[4] << 8 | ip_header[5]) << std::endl;
+    std::cout << "  Flags and Fragment Offset: 0x%04X" << (ip_header[6] << 8 | ip_header[7]) << std::endl;
+    std::cout << "  Time to Live: " << (int)ip_header[8] << std::endl;
+    std::cout << "  Protocol: " << (int)ip_header[9] << std::endl;
+    std::cout << "  Header Checksum: 0x%04X" << ntohs(ip_checksum) << std::endl;
+    std::cout << "  Source IP: " << inet_ntoa(*(struct in_addr*)src_ip_obj.data()) << std::endl;
+    std::cout << "  Destination IP: " << inet_ntoa(*(struct in_addr*)dst_ip_obj.data()) << std::endl;
 
     // 添加UDP头
     uint8_t udp_header[8];
@@ -100,7 +127,14 @@ std::vector<uint8_t> construct_dns_request(const std::string& domain_name, const
     udp_header[6] = 0;
     udp_header[7] = 0; // 校验和设为0
     packet.insert(packet.end(), udp_header, udp_header + 8);
-    std::cout << "UDP header added." << std::endl;
+    //std::cout << "UDP header added." << std::endl;
+
+    // 打印UDP层字段
+    std::cout << "UDP Layer Fields:" << std::endl;
+    std::cout << "  Source Port: " << ntohs(src_port_net) << std::endl;
+    std::cout << "  Destination Port: " << ntohs(dst_port_net) << std::endl;
+    std::cout << "  Length: " << ntohs(udp_length) << std::endl;
+    std::cout << "  Checksum: 0x%04X" << (udp_header[6] << 8 | udp_header[7]) << std::endl;
 
     // 添加DNS头
     packet.push_back(transaction_id >> 8);
@@ -115,7 +149,7 @@ std::vector<uint8_t> construct_dns_request(const std::string& domain_name, const
     packet.push_back(0);
     packet.push_back(0); // Additional RRs
     packet.push_back(0);
-    std::cout << "DNS header added." << std::endl;
+    //std::cout << "DNS header added." << std::endl;
 
     // 添加DNS问题部分
     // 将域名转换为DNS格式
@@ -129,14 +163,26 @@ std::vector<uint8_t> construct_dns_request(const std::string& domain_name, const
     packet.push_back(temp_domain.size());
     packet.insert(packet.end(), temp_domain.begin(), temp_domain.end());
     packet.push_back(0); // 终止符
-    std::cout << "DNS question part added." << std::endl;
+    //std::cout << "DNS question part added." << std::endl;
 
     // 类型和类
     packet.push_back(0);
     packet.push_back(query_type);
     packet.push_back(0);
     packet.push_back(1); // IN类
-    std::cout << "DNS type and class added." << std::endl;
+    //std::cout << "DNS type and class added." << std::endl;
+
+    // 打印DNS层字段
+    std::cout << "DNS Layer Fields:" << std::endl;
+    std::cout << "  Transaction ID: 0x%04X" << transaction_id << std::endl;
+    std::cout << "  Flags: 0x%04X" << flags << std::endl;
+    std::cout << "  Questions: " << questions << std::endl;
+    std::cout << "  Answer RRs: 0" << std::endl;
+    std::cout << "  Authority RRs: 0" << std::endl;
+    std::cout << "  Additional RRs: 0" << std::endl;
+    std::cout << "  Domain Name: " << domain_name << std::endl;
+    std::cout << "  Query Type: " << query_type << std::endl;
+    std::cout << "  Query Class: 1 (IN)" << std::endl;
 
     std::cout << "DNS request packet constructed." << std::endl;
     return packet;

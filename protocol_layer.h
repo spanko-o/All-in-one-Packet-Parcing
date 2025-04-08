@@ -14,12 +14,12 @@ enum class ProtocolType {
 };
 
 //MAC地址结构6字节
-struct MacAddress {
+struct MacAddress_new {
 	uint8_t bytes[6];
 };
 
 //IPv4地址结构4字节
-struct IPv4Address {
+struct IPv4Address_new {
 	uint8_t bytes[4];
 };
 //UDP地址结构

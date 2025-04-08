@@ -8,7 +8,7 @@
 constexpr size_t UDP_LEN = 8;
 
 // 计算 16 位反码求和的辅助函数
-uint16_t UdpParser::calculate_udp_checksum(const uint8_t* data, size_t length, const IPv4Address& src_ip, const IPv4Address& dst_ip) const {
+uint16_t UdpParser::calculate_udp_checksum(const uint8_t* data, size_t length, const IPv4Address_new& src_ip, const IPv4Address_new& dst_ip) const {
     // 构建伪首部
     uint8_t pseudo_header[12];
     memcpy(pseudo_header, src_ip.bytes, 4);
@@ -38,7 +38,7 @@ uint16_t UdpParser::calculate_udp_checksum(const uint8_t* data, size_t length, c
     return static_cast<uint16_t>(~sum);
 }
 
-UdpParser::UdpParser(const uint8_t* data, size_t length, const IPv4Address& src_ip, const IPv4Address& dst_ip)
+UdpParser::UdpParser(const uint8_t* data, size_t length, const IPv4Address_new& src_ip, const IPv4Address_new& dst_ip)
     : ProtocolLayer(data, length), src_ip_(src_ip), dst_ip_(dst_ip), payload_ptr_(nullptr), payload_len_(0) {
     parse();
 }
@@ -65,12 +65,26 @@ void UdpParser::parse() {
 
 std::string UdpParser::summary() const noexcept {
     std::ostringstream oss;
-    oss << "UDP Packet Summary:" << std::endl;
-    oss << "  Source Port: " << source_port_ << std::endl;
-    oss << "  Destination Port: " << destination_port_ << std::endl;
-    oss << "  Total Length: " << total_length_ << std::endl;
-    oss << "  Checksum: 0x" << std::hex << std::setfill('0') << std::setw(4) << checksum_ << std::endl;
-    oss << "  Checksum Verification: " << (verify_checksum() ? "Passed" : "Failed") << std::endl;
+    auto ip_to_str = [](const IPv4Address& ip) {
+        std::ostringstream ip_oss;
+        ip_oss << static_cast<int>(ip.bytes[0]) << "."
+            << static_cast<int>(ip.bytes[1]) << "."
+            << static_cast<int>(ip.bytes[2]) << "."
+            << static_cast<int>(ip.bytes[3]);
+        return ip_oss.str();
+    };
+
+    oss << "User Datagram Protocol, Src Port: " << source_port_ << ", Dst Port: " << destination_port_ << std::endl;
+    oss << "    Source Port: " << source_port_ << std::endl;
+    oss << "    Destination Port: " << destination_port_ << std::endl;
+    oss << "    Length: " << total_length_ << std::endl;
+    oss << "    Checksum: 0x" << std::hex << std::setfill('0') << std::setw(4) << checksum_ << " [unverified]" << std::endl;
+    oss << "    [Checksum Status: Unverified]" << std::endl;
+    oss << "    [Stream index: 0]" << std::endl;
+    oss << "    [Stream Packet Number: 1]" << std::endl;
+    oss << "    [Timestamps]" << std::endl;
+    oss << "    UDP payload (" << payload_len_ << " bytes)" << std::endl;
+
     return oss.str();
 }
 
