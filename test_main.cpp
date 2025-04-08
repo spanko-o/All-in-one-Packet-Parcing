@@ -1,7 +1,7 @@
 #include <pcap.h>
 #include <iostream>
 #include <typeinfo>
-#include "send.cpp"
+#include "send.h"
 
 int main() {
     std::string domain_name, dst_ip;

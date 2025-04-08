@@ -68,14 +68,14 @@ void process_packet(u_char* user, const struct pcap_pkthdr* header, const u_char
 
                     const auto* dns_layer = pkt.find_layer<DNSParser>();
                     if (dns_layer) {
-                        std::cout << "[DNS] Query: " << dns_layer->get_domain_name() << std::endl;
+                        std::cout << "[DNS] Query: " << dns_layer->summary() << std::endl;
                     }
                 }
             }
         }
 
         // 输出最终结果
-        std::cout << pkt.to_string() << std::endl;
+        //std::cout << pkt.to_string() << std::endl;
 
     }
     catch (const std::exception& e) {

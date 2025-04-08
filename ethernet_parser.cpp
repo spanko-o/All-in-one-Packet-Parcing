@@ -41,7 +41,7 @@ void EthernetParser::parse() {
 }
 
 std::string EthernetParser::summary() const noexcept {
-    auto mac_to_str = [](const MacAddress& mac) {
+    auto mac_to_str = [](const MacAddress_new& mac) {
         std::ostringstream oss;
         oss << std::hex << std::setfill('0');
         for (size_t i = 0; i < 6; ++i) {

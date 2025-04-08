@@ -4,7 +4,7 @@
 
 class UdpParser : public ProtocolLayer {
 public:
-    explicit UdpParser(const uint8_t* data, size_t length, const IPv4Address& src_ip, const IPv4Address& dst_ip);
+    explicit UdpParser(const uint8_t* data, size_t length, const IPv4Address_new& src_ip, const IPv4Address_new& dst_ip);
 
     ProtocolType type() const noexcept override {
         return ProtocolType::UDP;
@@ -31,15 +31,15 @@ public:
 private:
     void parse();
 
-    uint16_t calculate_udp_checksum(const uint8_t* data, size_t length, const IPv4Address& src_ip, const IPv4Address& dst_ip) const;
+    uint16_t calculate_udp_checksum(const uint8_t* data, size_t length, const IPv4Address_new& src_ip, const IPv4Address_new& dst_ip) const;
 
     uint16_t source_port_;
     uint16_t destination_port_;
     uint16_t total_length_;
     uint16_t checksum_;
 
-    const IPv4Address& src_ip_;
-    const IPv4Address& dst_ip_;
+    const IPv4Address_new& src_ip_;
+    const IPv4Address_new& dst_ip_;
     const uint8_t* payload_ptr_;
     size_t payload_len_;
 };

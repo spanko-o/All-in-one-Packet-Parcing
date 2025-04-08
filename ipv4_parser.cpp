@@ -58,6 +58,16 @@ std::string IPv4Parser::summary() const noexcept {
         return oss.str();
     };
 
+    // 解析版本和头部长度（前4位是版本，后4位是IHL）
+    uint8_t version_ihl = raw_data_[0];
+    uint8_t ihl = version_ihl & 0x0F;  // 头部长度（32位字为单位）
+    size_t header_bytes = ihl * 4;     // 转换为字节数
+
+    // 解析标志位（假设原始数据中存在标志位相关数据）
+    uint16_t flags_and_fragment_offset = (raw_data_[6] << 8) | raw_data_[7];
+    uint8_t flags = flags_and_fragment_offset >> 13;  // 提取标志位
+    uint16_t fragment_offset = flags_and_fragment_offset & 0x1FFF;  // 提取片偏移
+
     std::string protocol_str;
     switch (protocol_) {
     case 6:  protocol_str = "TCP"; break;
@@ -66,8 +76,13 @@ std::string IPv4Parser::summary() const noexcept {
     default: protocol_str = "0x" + std::to_string(protocol_);
     }
 
-    return "IPv4 [Src: " + ip_to_str(src_ip_) +
+    return "IPv4 [Version: " + std::to_string(version_ihl >> 4) +
+        ", Header Length: " + std::to_string(header_bytes) + " bytes" +
+        ", Src: " + ip_to_str(src_ip_) +
         ", Dst: " + ip_to_str(dst_ip_) +
         ", Proto: " + protocol_str +
-        ", TTL: " + std::to_string(ttl_) + "]";
+        ", TTL: " + std::to_string(ttl_) +
+        ", Total Length: " + std::to_string(total_length_) +
+        ", Flags: " + std::to_string(flags) +
+        ", Fragment Offset: " + std::to_string(fragment_offset) + "]";
 }
