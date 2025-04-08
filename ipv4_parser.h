@@ -19,10 +19,10 @@ public:
     }
 
     // IPv4特有方法
-    const IPv4Address& source_ip() const noexcept {
+    const IPv4Address_new& source_ip() const noexcept {
         return src_ip_;
     }
-    const IPv4Address& destination_ip() const noexcept {
+    const IPv4Address_new& destination_ip() const noexcept {
         return dst_ip_;
     }
     uint8_t protocol() const noexcept {
@@ -35,8 +35,8 @@ public:
 private:
     void parse();
 
-    IPv4Address src_ip_;
-    IPv4Address dst_ip_;
+    IPv4Address_new src_ip_;
+    IPv4Address_new dst_ip_;
     uint8_t protocol_;
     uint8_t ttl_;
     uint16_t total_length_;
